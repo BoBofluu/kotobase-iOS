@@ -1,0 +1,24 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserdata
+*.xcworkspace/xcuserdata/
+xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods (if used later)
+Pods/
+
+# OS files
+.DS_Store
+*.swp
+*~
+
+# Secrets
+*.xcconfig
+!*Debug.xcconfig
+!*Release.xcconfig
+GoogleService-Info.plist
