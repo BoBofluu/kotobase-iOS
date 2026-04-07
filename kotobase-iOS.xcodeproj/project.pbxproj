@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C7F439CC2F85524900E7AC16 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C7F439CB2F85524900E7AC16 /* FirebaseAuth */; };
+		C7F439CE2F85524900E7AC16 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C7F439CD2F85524900E7AC16 /* FirebaseFirestore */; };
+		C7F439D12F85535B00E7AC16 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C7F439D02F85535B00E7AC16 /* GoogleSignIn */; };
+		C7F439D32F85535B00E7AC16 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7F439D22F85535B00E7AC16 /* GoogleSignInSwift */; };
+		C7F439D62F85545700E7AC16 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C7F439D52F85545700E7AC16 /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C7CB19442F8549AF003C6A54 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +60,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7F439CC2F85524900E7AC16 /* FirebaseAuth in Frameworks */,
+				C7F439CE2F85524900E7AC16 /* FirebaseFirestore in Frameworks */,
+				C7F439D12F85535B00E7AC16 /* GoogleSignIn in Frameworks */,
+				C7F439D32F85535B00E7AC16 /* GoogleSignInSwift in Frameworks */,
+				C7F439D62F85545700E7AC16 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +125,11 @@
 			);
 			name = "kotobase-iOS";
 			packageProductDependencies = (
+				C7F439CB2F85524900E7AC16 /* FirebaseAuth */,
+				C7F439CD2F85524900E7AC16 /* FirebaseFirestore */,
+				C7F439D02F85535B00E7AC16 /* GoogleSignIn */,
+				C7F439D22F85535B00E7AC16 /* GoogleSignInSwift */,
+				C7F439D52F85545700E7AC16 /* Kingfisher */,
 			);
 			productName = "kotobase-iOS";
 			productReference = C7CB19342F8549AD003C6A54 /* kotobase-iOS.app */;
@@ -195,6 +213,11 @@
 			);
 			mainGroup = C7CB192B2F8549AD003C6A54;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C7F439CA2F85524900E7AC16 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C7F439CF2F85535B00E7AC16 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				C7F439D42F85545700E7AC16 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C7CB19352F8549AD003C6A54 /* Products */;
 			projectDirPath = "";
@@ -578,6 +601,61 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C7F439CA2F85524900E7AC16 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.0;
+			};
+		};
+		C7F439CF2F85535B00E7AC16 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+		C7F439D42F85545700E7AC16 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C7F439CB2F85524900E7AC16 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7F439CA2F85524900E7AC16 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C7F439CD2F85524900E7AC16 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7F439CA2F85524900E7AC16 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		C7F439D02F85535B00E7AC16 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7F439CF2F85535B00E7AC16 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		C7F439D22F85535B00E7AC16 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7F439CF2F85535B00E7AC16 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		C7F439D52F85545700E7AC16 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7F439D42F85545700E7AC16 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C7CB192C2F8549AD003C6A54 /* Project object */;
 }
