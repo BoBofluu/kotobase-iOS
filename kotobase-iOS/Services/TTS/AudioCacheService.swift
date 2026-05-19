@@ -1,8 +1,18 @@
+import CryptoKit
 import Foundation
+
+/// 音訊快取服務介面
+protocol AudioCaching {
+    func get(key: String) -> String?
+    func set(key: String, base64Audio: String)
+    func makeKey(text: String, languageCode: String, voiceName: String, prompt: String) -> String
+    func cachedFileURL(key: String) -> URL?
+    func clearAll()
+}
 
 /// 音訊快取服務
 /// - Note: 對應 Web 版 audioCache.js，使用 FileManager 儲存音訊檔案，設定上限避免佔用過多空間
-final class AudioCacheService {
+final class AudioCacheService: AudioCaching {
 
     // MARK: - Singleton
 
@@ -81,15 +91,26 @@ final class AudioCacheService {
         }
     }
 
-    /// 產生快取鍵
+    /// 產生快取鍵（SHA256 hash 避免特殊字元衝突）
     /// - Parameters:
     ///   - text: 文字內容
     ///   - languageCode: 語言代碼
     ///   - voiceName: 語音名稱
     ///   - prompt: 提示詞
-    /// - Returns: 組合後的鍵
-    func makeKey(text: String, languageCode: String, voiceName: String, prompt: String = "") -> String {
-        "\(text)|\(languageCode)|\(voiceName)|\(prompt)"
+    /// - Returns: 組合後的鍵（hex hash）
+    func makeKey(text: String, languageCode: String, voiceName: String, prompt: String) -> String {
+        let raw = "\(text)\u{1F}\(languageCode)\u{1F}\(voiceName)\u{1F}\(prompt)"
+        let hash = SHA256.hash(data: Data(raw.utf8))
+        return hash.map { String(format: "%02x", $0) }.joined()
+    }
+
+    /// 取得快取項目對應的檔案 URL（不更新存取時間）
+    /// - Parameter key: 快取鍵
+    /// - Returns: 檔案 URL，無快取或檔案遺失時回傳 nil
+    func cachedFileURL(key: String) -> URL? {
+        guard let entry = cacheIndex[key] else { return nil }
+        let url = cacheDirectory.appendingPathComponent(entry.filename)
+        return FileManager.default.fileExists(atPath: url.path) ? url : nil
     }
 
     /// 清除所有快取

@@ -1,8 +1,27 @@
 import Foundation
 
+/// TTS 語音合成 API 服務介面
+protocol TTSAPIServicing {
+    func synthesizeSpeech(
+        text: String,
+        languageCode: String,
+        idToken: String,
+        options: TTSOptions
+    ) async throws -> TTSResponse
+
+    func synthesizeStandardSpeech(
+        text: String,
+        languageCode: String,
+        idToken: String,
+        options: StandardTTSOptions
+    ) async throws -> TTSResponse
+
+    func getVoices() async throws -> VoicesResponse
+}
+
 /// TTS 語音合成 API 服務
 /// - Note: 對應 Web 版 ttsApi.js，呼叫 Cloud Run 上的 /tts 與 /tts-standard 端點
-struct TTSAPIService {
+struct TTSAPIService: TTSAPIServicing {
 
     // MARK: - Constants
 
@@ -127,7 +146,7 @@ struct TTSAPIService {
 // MARK: - Options
 
 /// Gemini TTS 語音選項
-struct TTSOptions {
+nonisolated struct TTSOptions {
     /// 語音名稱（預設：Achernar）
     var voiceName: String = "Achernar"
     /// 語速（0.25 ~ 4.0）
@@ -139,7 +158,7 @@ struct TTSOptions {
 }
 
 /// Wavenet 標準 TTS 語音選項
-struct StandardTTSOptions {
+nonisolated struct StandardTTSOptions {
     /// 語音名稱（預設：ja-JP-Wavenet-A，女聲）
     var voiceName: String = "ja-JP-Wavenet-A"
     /// 語速

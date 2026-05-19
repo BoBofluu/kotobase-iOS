@@ -9,24 +9,24 @@ final class CloudSyncUseCase {
 
     private let wordUseCase: WordUseCase
     private let categoryUseCase: CategoryUseCase
-    private let firestoreService: FirestoreService
-    private let authService: FirebaseAuthService
+    private let firestoreService: FirestoreServicing
+    private let authSession: AuthSessionProviding
 
     // MARK: - Init
 
     /// - Parameters:
     ///   - modelContext: SwiftData 的 ModelContext
-    ///   - firestoreService: Firestore 服務實例
-    ///   - authService: 認證服務實例
+    ///   - firestoreService: Firestore 服務（Protocol 注入）
+    ///   - authSession: 認證狀態（Protocol 注入，預設用 FirebaseAuthService）
     init(
         modelContext: ModelContext,
-        firestoreService: FirestoreService = .shared,
-        authService: FirebaseAuthService = .shared
+        firestoreService: FirestoreServicing = FirestoreService.shared,
+        authSession: AuthSessionProviding = FirebaseAuthService.shared
     ) {
         self.wordUseCase = WordUseCase(modelContext: modelContext)
         self.categoryUseCase = CategoryUseCase(modelContext: modelContext)
         self.firestoreService = firestoreService
-        self.authService = authService
+        self.authSession = authSession
     }
 
     // MARK: - Upload
@@ -137,7 +137,7 @@ final class CloudSyncUseCase {
 
     /// 取得目前登入使用者的 UID，未登入則拋出錯誤
     private func requireUID() throws -> String {
-        guard let uid = authService.currentUID else {
+        guard let uid = authSession.currentUID else {
             throw SyncError.notSignedIn
         }
         return uid

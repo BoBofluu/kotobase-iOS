@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('kotobase-iOS/Localizable.xcstrings'\\)\\); print\\('keys:', len\\(d['strings']\\)\\); print\\('langs per key OK:', all\\(set\\(v['localizations'].keys\\(\\)\\)=={'en','ja','ko','zh-Hant'} for v in d['strings'].values\\(\\)\\)\\)\")",
+      "mcp__xcode__XcodeListWindows",
+      "mcp__xcode__BuildProject",
+      "Bash(grep -E \"\\\\.\\(env|json\\)$\")",
+      "Read(//Users/m.li/Documents/git/ios/.claude/rules/**)",
+      "Bash(git mv *)",
+      "mcp__plugin_serena_serena__check_onboarding_performed",
+      "Bash(xcodebuild -project kotobase-iOS.xcodeproj -scheme kotobase-iOS -destination 'generic/platform=iOS Simulator' -configuration Debug build)"
+    ]
+  }
+}

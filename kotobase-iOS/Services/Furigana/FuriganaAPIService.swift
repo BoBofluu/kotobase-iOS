@@ -1,10 +1,19 @@
 import Foundation
 
+/// 平假名標注 API 服務介面
+protocol FuriganaAPIServicing {
+    /// 取得日文文字的平假名標注
+    func fetchFurigana(text: String) async throws -> [FuriganaReading]
+}
+
 /// 平假名標注 API 服務
 /// - Note: 對應 Web 版 ttsApi.js 中的 fetchFurigana，呼叫 Cloud Run 的 /furigana 端點
-struct FuriganaAPIService {
+struct FuriganaAPIService: FuriganaAPIServicing {
 
     // MARK: - Constants
+
+    /// 文字最大長度（對應後端 MAX_TEXT_LENGTH）
+    static let maxTextLength = 5_000
 
     private let baseURL: String
 
@@ -32,7 +41,7 @@ struct FuriganaAPIService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         let body: [String: Any] = [
-            "text": String(sanitized.prefix(TTSAPIService.maxTextLength))
+            "text": String(sanitized.prefix(Self.maxTextLength))
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
