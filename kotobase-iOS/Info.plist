@@ -15,5 +15,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>用於拍攝筆記照片並辨識文字</string>
 </dict>
 </plist>

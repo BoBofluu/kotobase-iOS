@@ -37,6 +37,7 @@ final class WordUseCase {
     ///   - note: 備註
     ///   - categoryId: 主分類 ID
     ///   - subcategoryIds: 子分類 ID 陣列
+    ///   - imageDatas: 附圖的 JPEG 資料陣列
     /// - Returns: 新建的筆記
     @discardableResult
     func addWord(
@@ -44,7 +45,8 @@ final class WordUseCase {
         jpContent: String = "",
         note: String = "",
         categoryId: String? = nil,
-        subcategoryIds: [String] = []
+        subcategoryIds: [String] = [],
+        imageDatas: [Data] = []
     ) -> Word {
         let word = Word(
             title: String(title.prefix(FieldLimit.title)),
@@ -54,6 +56,14 @@ final class WordUseCase {
             subcategoryIds: subcategoryIds
         )
         modelContext.insert(word)
+
+        for data in imageDatas {
+            let image = NoteImage(data: data)
+            image.word = word
+            word.images.append(image)
+            modelContext.insert(image)
+        }
+
         return word
     }
 

@@ -52,6 +52,11 @@ enum APIConfig {
         CategoryUseCase(modelContext: context)
     }
 
+    /// 建立 PaletteUseCase（需要當前 ModelContext）
+    static func makePaletteUseCase(context: ModelContext) -> PaletteUseCase {
+        PaletteUseCase(modelContext: context)
+    }
+
     /// 建立 CloudSyncUseCase（需要當前 ModelContext）
     static func makeCloudSyncUseCase(context: ModelContext) -> CloudSyncUseCase {
         CloudSyncUseCase(

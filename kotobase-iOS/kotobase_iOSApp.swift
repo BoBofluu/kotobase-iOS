@@ -30,6 +30,8 @@ struct KotobaseApp: App {
             Category.self,
             Subcategory.self,
             Word.self,
+            NoteImage.self,
+            PaletteColor.self,
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,

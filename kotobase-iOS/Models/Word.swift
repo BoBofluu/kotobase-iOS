@@ -20,6 +20,10 @@ final class Word {
     /// 建立時間
     var createdAt: Date
 
+    /// 附圖（刪筆記時一併刪除）
+    @Relationship(deleteRule: .cascade, inverse: \NoteImage.word)
+    var images: [NoteImage]
+
     init(
         id: String = UUID().uuidString,
         title: String,
@@ -27,7 +31,8 @@ final class Word {
         note: String = "",
         categoryId: String? = nil,
         subcategoryIds: [String] = [],
-        createdAt: Date = .now
+        createdAt: Date = .now,
+        images: [NoteImage] = []
     ) {
         self.id = id
         self.title = title
@@ -36,5 +41,6 @@ final class Word {
         self.categoryId = categoryId
         self.subcategoryIds = subcategoryIds
         self.createdAt = createdAt
+        self.images = images
     }
 }

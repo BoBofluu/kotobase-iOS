@@ -93,6 +93,14 @@ final class CategoryUseCase {
         category.label = label
     }
 
+    /// 更新子分類的名稱
+    /// - Parameters:
+    ///   - subcategory: 要更新的子分類
+    ///   - label: 新的名稱
+    func updateSubcategoryLabel(_ subcategory: Subcategory, label: String) {
+        subcategory.label = label
+    }
+
     // MARK: - Delete
 
     /// 刪除主分類（連帶刪除所有子分類）

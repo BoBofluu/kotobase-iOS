@@ -25,6 +25,19 @@ final class CategoryListViewModel {
         newCategoryName = ""
     }
 
+    /// 重新命名主分類
+    /// - Parameters:
+    ///   - context: SwiftData 的 ModelContext
+    ///   - category: 要更新的分類
+    ///   - label: 新名稱
+    func updateCategoryLabel(context: ModelContext, category: Category, label: String) {
+        let trimmed = label.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+
+        let useCase = CategoryUseCase(modelContext: context)
+        useCase.updateCategoryLabel(category, label: trimmed)
+    }
+
     /// 刪除主分類
     /// - Parameters:
     ///   - context: SwiftData 的 ModelContext

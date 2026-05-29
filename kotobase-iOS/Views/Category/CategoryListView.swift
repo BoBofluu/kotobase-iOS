@@ -8,6 +8,11 @@ struct CategoryListView: View {
     @Query(sort: \Category.createdAt) private var categories: [Category]
     @State private var viewModel = CategoryListViewModel()
 
+    // MARK: - Rename State
+
+    @State private var renameTarget: Category?
+    @State private var renameText: String = ""
+
     var body: some View {
         List {
             // 新增分類區塊
@@ -25,17 +30,46 @@ struct CategoryListView: View {
             Section {
                 ForEach(categories) { category in
                     NavigationLink(destination: SubcategoryView(category: category)) {
-                        Text(category.label)
+                        HStack(spacing: 12) {
+                            Circle()
+                                .fill(Color(hex: category.customColor) ?? .gray)
+                                .frame(width: 12, height: 12)
+                            Text(category.label)
+                        }
                     }
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        viewModel.deleteCategory(context: modelContext, category: categories[index])
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            viewModel.deleteCategory(context: modelContext, category: category)
+                        } label: {
+                            Label("刪除", systemImage: "trash")
+                        }
+                        Button {
+                            startRename(category)
+                        } label: {
+                            Label("編輯", systemImage: "pencil")
+                        }
+                        .tint(.blue)
                     }
                 }
             }
         }
         .navigationTitle(String(localized: "category_management_title"))
+        .alert("重新命名分類", isPresented: Binding(
+            get: { renameTarget != nil },
+            set: { if !$0 { renameTarget = nil } }
+        ), presenting: renameTarget) { category in
+            TextField("分類名稱", text: $renameText)
+            Button("取消", role: .cancel) { renameTarget = nil }
+            Button("儲存") {
+                viewModel.updateCategoryLabel(context: modelContext, category: category, label: renameText)
+                renameTarget = nil
+            }
+        }
+    }
+
+    private func startRename(_ category: Category) {
+        renameText = category.label
+        renameTarget = category
     }
 }
 
@@ -43,5 +77,5 @@ struct CategoryListView: View {
     NavigationStack {
         CategoryListView()
     }
-    .modelContainer(for: Category.self, inMemory: true)
+    .modelContainer(for: [Category.self, Subcategory.self, Word.self, NoteImage.self, PaletteColor.self], inMemory: true)
 }

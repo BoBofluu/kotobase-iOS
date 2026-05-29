@@ -24,6 +24,24 @@ final class SubcategoryViewModel {
         useCase.updateCategoryColor(category, color: color)
     }
 
+    /// 登錄自訂顏色到獨立色盤
+    /// - Parameters:
+    ///   - context: SwiftData 的 ModelContext
+    ///   - hex: 顏色 Hex（預設色 / 重複 / 已達上限會自動略過）
+    func registerCustomColor(context: ModelContext, hex: String) {
+        let useCase = PaletteUseCase(modelContext: context)
+        useCase.addColor(hex: hex)
+    }
+
+    /// 從色盤刪除自訂顏色
+    /// - Parameters:
+    ///   - context: SwiftData 的 ModelContext
+    ///   - color: 要刪除的自訂顏色
+    func deletePaletteColor(context: ModelContext, color: PaletteColor) {
+        let useCase = PaletteUseCase(modelContext: context)
+        useCase.deleteColor(color)
+    }
+
     /// 新增子分類
     /// - Parameters:
     ///   - context: SwiftData 的 ModelContext
@@ -35,6 +53,19 @@ final class SubcategoryViewModel {
         let useCase = CategoryUseCase(modelContext: context)
         useCase.addSubcategory(label: trimmed, to: category)
         newSubcategoryName = ""
+    }
+
+    /// 重新命名子分類
+    /// - Parameters:
+    ///   - context: SwiftData 的 ModelContext
+    ///   - subcategory: 要更新的子分類
+    ///   - label: 新名稱
+    func updateSubcategoryLabel(context: ModelContext, subcategory: Subcategory, label: String) {
+        let trimmed = label.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+
+        let useCase = CategoryUseCase(modelContext: context)
+        useCase.updateSubcategoryLabel(subcategory, label: trimmed)
     }
 
     /// 刪除子分類
