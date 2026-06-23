@@ -13,6 +13,11 @@ struct ContentView: View {
 
             SettingsPlaceholderView()
                 .tabItem { Label("設定", systemImage: "gearshape") }
+
+            #if DEBUG
+            APITestView()
+                .tabItem { Label("除錯", systemImage: "ladybug") }
+            #endif
         }
         .tint(.brandCyan)
         .dismissKeyboardOnTapOutside()

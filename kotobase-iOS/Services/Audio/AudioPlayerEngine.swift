@@ -24,7 +24,7 @@ final class AudioPlayerEngine: NSObject {
     // MARK: - Private
 
     private var player: AVAudioPlayer?
-    private var progressTimer: Timer?
+    private var progressTask: Task<Void, Never>?
 
     // MARK: - Load
 
@@ -97,19 +97,22 @@ final class AudioPlayerEngine: NSObject {
         try AVAudioSession.sharedInstance().setActive(true)
     }
 
+    /// 用 Swift concurrency loop 取代 Timer
+    /// - Note: Swift 6 strict concurrency 下 Timer closure 是 @Sendable，無法捕捉 main-actor 的 self；改用 Task + sleep 自然在 MainActor 內執行
     private func startProgressTimer() {
         stopProgressTimer()
-        progressTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                guard let self = self, let player = self.player else { return }
+        progressTask = Task { @MainActor [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 50_000_000)
+                guard let self, let player = self.player else { return }
                 self.currentTime = player.currentTime
             }
         }
     }
 
     private func stopProgressTimer() {
-        progressTimer?.invalidate()
-        progressTimer = nil
+        progressTask?.cancel()
+        progressTask = nil
     }
 }
 

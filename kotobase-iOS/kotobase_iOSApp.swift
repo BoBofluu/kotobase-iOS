@@ -32,6 +32,7 @@ struct KotobaseApp: App {
             Word.self,
             NoteImage.self,
             PaletteColor.self,
+            UserFuriganaOverride.self,
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,

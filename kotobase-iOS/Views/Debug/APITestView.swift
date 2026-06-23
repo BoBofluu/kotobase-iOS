@@ -7,9 +7,10 @@ struct APITestView: View {
 
     // MARK: - State
 
-    @State private var inputText: String = "今日は良い天気ですね。"
+    @State private var inputText: String = "今日は海馬が良い天気ですね。"
     @State private var currentEmail: String?
-    @State private var furiganaReadings: [FuriganaReading] = []
+    /// 已送出標注的文字（按「產生 Furigana」後才更新，觸發 FuriganaText 載入）
+    @State private var submittedFuriganaText: String = ""
     @State private var ttsStatus: String = ""
     @State private var shareItem: ShareItem?
     @State private var errorMessage: String = ""
@@ -89,14 +90,15 @@ struct APITestView: View {
     }
 
     private var furiganaSection: some View {
-        section(title: "Furigana 顯示") {
+        section(title: "Furigana 顯示（點漢字可修正讀音）") {
             Button("產生 Furigana") {
-                Task { await loadFurigana() }
+                submittedFuriganaText = inputText
             }
-            .disabled(isLoading || inputText.isEmpty)
+            .disabled(inputText.isEmpty)
 
-            if !furiganaReadings.isEmpty {
-                FuriganaTextView(readings: furiganaReadings, baseFont: .title2)
+            if !submittedFuriganaText.isEmpty {
+                // 直接用 FuriganaText：自帶 JMdict 覆蓋、漢字點擊 sheet、使用者修正即時反映
+                FuriganaText(text: submittedFuriganaText, baseFont: .title2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 8)
             }
@@ -263,18 +265,6 @@ struct APITestView: View {
     }
 
     // MARK: - API Tests
-
-    private func loadFurigana() async {
-        resetMessages()
-        isLoading = true
-        defer { isLoading = false }
-
-        do {
-            furiganaReadings = try await APIConfig.furiganaUseCase.annotate(text: inputText)
-        } catch {
-            errorMessage = "Furigana 失敗：\(error)"
-        }
-    }
 
     private func loadGeminiTTS() async {
         resetMessages()

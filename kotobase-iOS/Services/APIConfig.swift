@@ -19,6 +19,10 @@ enum APIConfig {
     /// 平假名標注 API 服務
     static let furiganaService: FuriganaAPIServicing = FuriganaAPIService(baseURL: baseURL)
 
+    /// 平假名標注字典覆蓋服務（JMdict）
+    /// - Note: 修正 Yahoo 偶爾的錯誤讀音（資料來源：JmdictFurigana.txt）
+    static let furiganaOverrideDictionary: FuriganaOverrideDictionarying = FuriganaOverrideDictionary()
+
     /// 認證服務
     static let authService: AuthServicing = FirebaseAuthService.shared
 
@@ -37,8 +41,11 @@ enum APIConfig {
         tokenProvider: authService
     )
 
-    /// Furigana UseCase
-    static let furiganaUseCase = FuriganaUseCase(furiganaService: furiganaService)
+    /// Furigana UseCase（含 JMdict 覆蓋層）
+    static let furiganaUseCase = FuriganaUseCase(
+        furiganaService: furiganaService,
+        overrideDictionary: furiganaOverrideDictionary
+    )
 
     // MARK: - UseCase Factories（需注入 ModelContext）
 

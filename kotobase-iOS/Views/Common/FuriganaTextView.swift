@@ -2,6 +2,7 @@ import SwiftUI
 
 /// 平假名標注顯示 view
 /// - Note: 將 `[FuriganaReading]` 排版成「平假名置於漢字上方」的樣式，並支援自動換行
+///   有讀音的 token（漢字）可選擇接收點擊回呼以開啟漢字操作 sheet
 struct FuriganaTextView: View {
 
     // MARK: - Properties
@@ -27,6 +28,9 @@ struct FuriganaTextView: View {
     /// 平假名與漢字之間的垂直間距
     var rubyGap: CGFloat = 2
 
+    /// 漢字 token 被點擊時的回呼（nil 時不啟用點擊）
+    var onKanjiTap: ((FuriganaReading) -> Void)? = nil
+
     // MARK: - Body
 
     var body: some View {
@@ -37,7 +41,8 @@ struct FuriganaTextView: View {
                     baseFont: baseFont,
                     rubyFontSize: rubyFontSize,
                     rubyColor: rubyColor,
-                    rubyGap: rubyGap
+                    rubyGap: rubyGap,
+                    onTap: onKanjiTap
                 )
             }
         }
@@ -54,6 +59,12 @@ private struct FuriganaTokenView: View {
     let rubyFontSize: CGFloat
     let rubyColor: Color
     let rubyGap: CGFloat
+    let onTap: ((FuriganaReading) -> Void)?
+
+    /// 是否可點擊：有讀音（漢字 token）且有 callback 才啟用
+    private var isTappable: Bool {
+        token.reading != nil && onTap != nil
+    }
 
     var body: some View {
         VStack(spacing: rubyGap) {
@@ -66,6 +77,11 @@ private struct FuriganaTokenView: View {
                 .font(baseFont)
                 .lineLimit(1)
                 .fixedSize()
+        }
+        .contentShape(.rect)
+        .onTapGesture {
+            guard isTappable, let onTap else { return }
+            onTap(token)
         }
     }
 }
